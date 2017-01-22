@@ -1,0 +1,5 @@
+next
+stdin/next>stdin/read
+stdin/next?stdin/eof:3
+stdout/write>stdin/next
+next?next:-3

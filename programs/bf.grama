@@ -1,0 +1,350 @@
+# Brainfuck interpreter. Each input character must be terminated by a newline.
+value; next; prev
+
+\00
+\01; \00/next>\01; \01/prev>\00
+\02; \01/next>\02; \02/prev>\01
+\03; \02/next>\03; \03/prev>\02
+\04; \03/next>\04; \04/prev>\03
+\05; \04/next>\05; \05/prev>\04
+\06; \05/next>\06; \06/prev>\05
+\07; \06/next>\07; \07/prev>\06
+\08; \07/next>\08; \08/prev>\07
+\09; \08/next>\09; \09/prev>\08
+\0a; \09/next>\0a; \0a/prev>\09
+\0b; \0a/next>\0b; \0b/prev>\0a
+\0c; \0b/next>\0c; \0c/prev>\0b
+\0d; \0c/next>\0d; \0d/prev>\0c
+\0e; \0d/next>\0e; \0e/prev>\0d
+\0f; \0e/next>\0f; \0f/prev>\0e
+\10; \0f/next>\10; \10/prev>\0f
+\11; \10/next>\11; \11/prev>\10
+\12; \11/next>\12; \12/prev>\11
+\13; \12/next>\13; \13/prev>\12
+\14; \13/next>\14; \14/prev>\13
+\15; \14/next>\15; \15/prev>\14
+\16; \15/next>\16; \16/prev>\15
+\17; \16/next>\17; \17/prev>\16
+\18; \17/next>\18; \18/prev>\17
+\19; \18/next>\19; \19/prev>\18
+\1a; \19/next>\1a; \1a/prev>\19
+\1b; \1a/next>\1b; \1b/prev>\1a
+\1c; \1b/next>\1c; \1c/prev>\1b
+\1d; \1c/next>\1d; \1d/prev>\1c
+\1e; \1d/next>\1e; \1e/prev>\1d
+\1f; \1e/next>\1f; \1f/prev>\1e
+\20; \1f/next>\20; \20/prev>\1f
+\21; \20/next>\21; \21/prev>\20
+\22; \21/next>\22; \22/prev>\21
+\23; \22/next>\23; \23/prev>\22
+\24; \23/next>\24; \24/prev>\23
+\25; \24/next>\25; \25/prev>\24
+\26; \25/next>\26; \26/prev>\25
+\27; \26/next>\27; \27/prev>\26
+\28; \27/next>\28; \28/prev>\27
+\29; \28/next>\29; \29/prev>\28
+\2a; \29/next>\2a; \2a/prev>\29
+\2b; \2a/next>\2b; \2b/prev>\2a
+\2c; \2b/next>\2c; \2c/prev>\2b
+\2d; \2c/next>\2d; \2d/prev>\2c
+\2e; \2d/next>\2e; \2e/prev>\2d
+\2f; \2e/next>\2f; \2f/prev>\2e
+\30; \2f/next>\30; \30/prev>\2f
+\31; \30/next>\31; \31/prev>\30
+\32; \31/next>\32; \32/prev>\31
+\33; \32/next>\33; \33/prev>\32
+\34; \33/next>\34; \34/prev>\33
+\35; \34/next>\35; \35/prev>\34
+\36; \35/next>\36; \36/prev>\35
+\37; \36/next>\37; \37/prev>\36
+\38; \37/next>\38; \38/prev>\37
+\39; \38/next>\39; \39/prev>\38
+\3a; \39/next>\3a; \3a/prev>\39
+\3b; \3a/next>\3b; \3b/prev>\3a
+\3c; \3b/next>\3c; \3c/prev>\3b
+\3d; \3c/next>\3d; \3d/prev>\3c
+\3e; \3d/next>\3e; \3e/prev>\3d
+\3f; \3e/next>\3f; \3f/prev>\3e
+\40; \3f/next>\40; \40/prev>\3f
+\41; \40/next>\41; \41/prev>\40
+\42; \41/next>\42; \42/prev>\41
+\43; \42/next>\43; \43/prev>\42
+\44; \43/next>\44; \44/prev>\43
+\45; \44/next>\45; \45/prev>\44
+\46; \45/next>\46; \46/prev>\45
+\47; \46/next>\47; \47/prev>\46
+\48; \47/next>\48; \48/prev>\47
+\49; \48/next>\49; \49/prev>\48
+\4a; \49/next>\4a; \4a/prev>\49
+\4b; \4a/next>\4b; \4b/prev>\4a
+\4c; \4b/next>\4c; \4c/prev>\4b
+\4d; \4c/next>\4d; \4d/prev>\4c
+\4e; \4d/next>\4e; \4e/prev>\4d
+\4f; \4e/next>\4f; \4f/prev>\4e
+\50; \4f/next>\50; \50/prev>\4f
+\51; \50/next>\51; \51/prev>\50
+\52; \51/next>\52; \52/prev>\51
+\53; \52/next>\53; \53/prev>\52
+\54; \53/next>\54; \54/prev>\53
+\55; \54/next>\55; \55/prev>\54
+\56; \55/next>\56; \56/prev>\55
+\57; \56/next>\57; \57/prev>\56
+\58; \57/next>\58; \58/prev>\57
+\59; \58/next>\59; \59/prev>\58
+\5a; \59/next>\5a; \5a/prev>\59
+\5b; \5a/next>\5b; \5b/prev>\5a
+\5c; \5b/next>\5c; \5c/prev>\5b
+\5d; \5c/next>\5d; \5d/prev>\5c
+\5e; \5d/next>\5e; \5e/prev>\5d
+\5f; \5e/next>\5f; \5f/prev>\5e
+\60; \5f/next>\60; \60/prev>\5f
+\61; \60/next>\61; \61/prev>\60
+\62; \61/next>\62; \62/prev>\61
+\63; \62/next>\63; \63/prev>\62
+\64; \63/next>\64; \64/prev>\63
+\65; \64/next>\65; \65/prev>\64
+\66; \65/next>\66; \66/prev>\65
+\67; \66/next>\67; \67/prev>\66
+\68; \67/next>\68; \68/prev>\67
+\69; \68/next>\69; \69/prev>\68
+\6a; \69/next>\6a; \6a/prev>\69
+\6b; \6a/next>\6b; \6b/prev>\6a
+\6c; \6b/next>\6c; \6c/prev>\6b
+\6d; \6c/next>\6d; \6d/prev>\6c
+\6e; \6d/next>\6e; \6e/prev>\6d
+\6f; \6e/next>\6f; \6f/prev>\6e
+\70; \6f/next>\70; \70/prev>\6f
+\71; \70/next>\71; \71/prev>\70
+\72; \71/next>\72; \72/prev>\71
+\73; \72/next>\73; \73/prev>\72
+\74; \73/next>\74; \74/prev>\73
+\75; \74/next>\75; \75/prev>\74
+\76; \75/next>\76; \76/prev>\75
+\77; \76/next>\77; \77/prev>\76
+\78; \77/next>\78; \78/prev>\77
+\79; \78/next>\79; \79/prev>\78
+\7a; \79/next>\7a; \7a/prev>\79
+\7b; \7a/next>\7b; \7b/prev>\7a
+\7c; \7b/next>\7c; \7c/prev>\7b
+\7d; \7c/next>\7d; \7d/prev>\7c
+\7e; \7d/next>\7e; \7e/prev>\7d
+\7f; \7e/next>\7f; \7f/prev>\7e
+\80; \7f/next>\80; \80/prev>\7f
+\81; \80/next>\81; \81/prev>\80
+\82; \81/next>\82; \82/prev>\81
+\83; \82/next>\83; \83/prev>\82
+\84; \83/next>\84; \84/prev>\83
+\85; \84/next>\85; \85/prev>\84
+\86; \85/next>\86; \86/prev>\85
+\87; \86/next>\87; \87/prev>\86
+\88; \87/next>\88; \88/prev>\87
+\89; \88/next>\89; \89/prev>\88
+\8a; \89/next>\8a; \8a/prev>\89
+\8b; \8a/next>\8b; \8b/prev>\8a
+\8c; \8b/next>\8c; \8c/prev>\8b
+\8d; \8c/next>\8d; \8d/prev>\8c
+\8e; \8d/next>\8e; \8e/prev>\8d
+\8f; \8e/next>\8f; \8f/prev>\8e
+\90; \8f/next>\90; \90/prev>\8f
+\91; \90/next>\91; \91/prev>\90
+\92; \91/next>\92; \92/prev>\91
+\93; \92/next>\93; \93/prev>\92
+\94; \93/next>\94; \94/prev>\93
+\95; \94/next>\95; \95/prev>\94
+\96; \95/next>\96; \96/prev>\95
+\97; \96/next>\97; \97/prev>\96
+\98; \97/next>\98; \98/prev>\97
+\99; \98/next>\99; \99/prev>\98
+\9a; \99/next>\9a; \9a/prev>\99
+\9b; \9a/next>\9b; \9b/prev>\9a
+\9c; \9b/next>\9c; \9c/prev>\9b
+\9d; \9c/next>\9d; \9d/prev>\9c
+\9e; \9d/next>\9e; \9e/prev>\9d
+\9f; \9e/next>\9f; \9f/prev>\9e
+\a0; \9f/next>\a0; \a0/prev>\9f
+\a1; \a0/next>\a1; \a1/prev>\a0
+\a2; \a1/next>\a2; \a2/prev>\a1
+\a3; \a2/next>\a3; \a3/prev>\a2
+\a4; \a3/next>\a4; \a4/prev>\a3
+\a5; \a4/next>\a5; \a5/prev>\a4
+\a6; \a5/next>\a6; \a6/prev>\a5
+\a7; \a6/next>\a7; \a7/prev>\a6
+\a8; \a7/next>\a8; \a8/prev>\a7
+\a9; \a8/next>\a9; \a9/prev>\a8
+\aa; \a9/next>\aa; \aa/prev>\a9
+\ab; \aa/next>\ab; \ab/prev>\aa
+\ac; \ab/next>\ac; \ac/prev>\ab
+\ad; \ac/next>\ad; \ad/prev>\ac
+\ae; \ad/next>\ae; \ae/prev>\ad
+\af; \ae/next>\af; \af/prev>\ae
+\b0; \af/next>\b0; \b0/prev>\af
+\b1; \b0/next>\b1; \b1/prev>\b0
+\b2; \b1/next>\b2; \b2/prev>\b1
+\b3; \b2/next>\b3; \b3/prev>\b2
+\b4; \b3/next>\b4; \b4/prev>\b3
+\b5; \b4/next>\b5; \b5/prev>\b4
+\b6; \b5/next>\b6; \b6/prev>\b5
+\b7; \b6/next>\b7; \b7/prev>\b6
+\b8; \b7/next>\b8; \b8/prev>\b7
+\b9; \b8/next>\b9; \b9/prev>\b8
+\ba; \b9/next>\ba; \ba/prev>\b9
+\bb; \ba/next>\bb; \bb/prev>\ba
+\bc; \bb/next>\bc; \bc/prev>\bb
+\bd; \bc/next>\bd; \bd/prev>\bc
+\be; \bd/next>\be; \be/prev>\bd
+\bf; \be/next>\bf; \bf/prev>\be
+\c0; \bf/next>\c0; \c0/prev>\bf
+\c1; \c0/next>\c1; \c1/prev>\c0
+\c2; \c1/next>\c2; \c2/prev>\c1
+\c3; \c2/next>\c3; \c3/prev>\c2
+\c4; \c3/next>\c4; \c4/prev>\c3
+\c5; \c4/next>\c5; \c5/prev>\c4
+\c6; \c5/next>\c6; \c6/prev>\c5
+\c7; \c6/next>\c7; \c7/prev>\c6
+\c8; \c7/next>\c8; \c8/prev>\c7
+\c9; \c8/next>\c9; \c9/prev>\c8
+\ca; \c9/next>\ca; \ca/prev>\c9
+\cb; \ca/next>\cb; \cb/prev>\ca
+\cc; \cb/next>\cc; \cc/prev>\cb
+\cd; \cc/next>\cd; \cd/prev>\cc
+\ce; \cd/next>\ce; \ce/prev>\cd
+\cf; \ce/next>\cf; \cf/prev>\ce
+\d0; \cf/next>\d0; \d0/prev>\cf
+\d1; \d0/next>\d1; \d1/prev>\d0
+\d2; \d1/next>\d2; \d2/prev>\d1
+\d3; \d2/next>\d3; \d3/prev>\d2
+\d4; \d3/next>\d4; \d4/prev>\d3
+\d5; \d4/next>\d5; \d5/prev>\d4
+\d6; \d5/next>\d6; \d6/prev>\d5
+\d7; \d6/next>\d7; \d7/prev>\d6
+\d8; \d7/next>\d8; \d8/prev>\d7
+\d9; \d8/next>\d9; \d9/prev>\d8
+\da; \d9/next>\da; \da/prev>\d9
+\db; \da/next>\db; \db/prev>\da
+\dc; \db/next>\dc; \dc/prev>\db
+\dd; \dc/next>\dd; \dd/prev>\dc
+\de; \dd/next>\de; \de/prev>\dd
+\df; \de/next>\df; \df/prev>\de
+\e0; \df/next>\e0; \e0/prev>\df
+\e1; \e0/next>\e1; \e1/prev>\e0
+\e2; \e1/next>\e2; \e2/prev>\e1
+\e3; \e2/next>\e3; \e3/prev>\e2
+\e4; \e3/next>\e4; \e4/prev>\e3
+\e5; \e4/next>\e5; \e5/prev>\e4
+\e6; \e5/next>\e6; \e6/prev>\e5
+\e7; \e6/next>\e7; \e7/prev>\e6
+\e8; \e7/next>\e8; \e8/prev>\e7
+\e9; \e8/next>\e9; \e9/prev>\e8
+\ea; \e9/next>\ea; \ea/prev>\e9
+\eb; \ea/next>\eb; \eb/prev>\ea
+\ec; \eb/next>\ec; \ec/prev>\eb
+\ed; \ec/next>\ed; \ed/prev>\ec
+\ee; \ed/next>\ee; \ee/prev>\ed
+\ef; \ee/next>\ef; \ef/prev>\ee
+\f0; \ef/next>\f0; \f0/prev>\ef
+\f1; \f0/next>\f1; \f1/prev>\f0
+\f2; \f1/next>\f2; \f2/prev>\f1
+\f3; \f2/next>\f3; \f3/prev>\f2
+\f4; \f3/next>\f4; \f4/prev>\f3
+\f5; \f4/next>\f5; \f5/prev>\f4
+\f6; \f5/next>\f6; \f6/prev>\f5
+\f7; \f6/next>\f7; \f7/prev>\f6
+\f8; \f7/next>\f8; \f8/prev>\f7
+\f9; \f8/next>\f9; \f9/prev>\f8
+\fa; \f9/next>\fa; \fa/prev>\f9
+\fb; \fa/next>\fb; \fb/prev>\fa
+\fc; \fb/next>\fc; \fc/prev>\fb
+\fd; \fc/next>\fd; \fd/prev>\fc
+\fe; \fd/next>\fe; \fe/prev>\fd
+\ff; \fe/next>\ff; \ff/prev>\fe
+\00; \ff/next>\00; \00/prev>\ff
+
+memory; memory/value>\00
+
+cell; ptr
+ptr/cell>memory
+
+program; first; last; ip; stack
+
+stack/last>+
+
+# Read program, terminate with EOF or '!'
+program/first>+
+program/last>program/first
+program/last/value>stdin/read
+program/last/value?stdin/eof:5
+program/last/value?'!':4
+program/last/next>+
+program/last>program/last/next
+\00?\00:-5
+program/ip>program/first
+
+# Run
+program/ip?program/last:-1000
+
+# Increment value at pointer
+program/ip/value?'+':2; \00?\00:3
+  ptr/cell/value>ptr/cell/value/next
+  \00?\00:52
+
+# Decrement value at pointer
+program/ip/value?'-':2; \00?\00:3
+  ptr/cell/value>ptr/cell/value/prev
+  \00?\00:48
+
+# Increment pointer
+program/ip/value?'>':2; \00?\00:7
+  ptr/cell/next?ptr/cell/next:4  # does ptr/value/next exist?
+  ptr/cell/next>+
+  ptr/cell/next/value>\00
+  ptr/cell/next/prev>ptr/cell
+  ptr/cell>ptr/cell/next
+  \00?\00:40
+
+# Decrement pointer
+program/ip/value?'<':2; \00?\00:3
+  ptr/cell>ptr/cell/prev
+  \00?\00:36
+
+# Output value at pointer
+program/ip/value?'.':2; \00?\00:3
+  stdout/write>ptr/cell/value
+  \00?\00:32
+
+# Input to value at pointer
+program/ip/value?',':2; \00?\00:3
+  ptr/cell/value>stdin/read
+  \00?\00:28
+
+# Jump past matching ']' or push ip to stack
+program/ip/value?'[':2; \00?\00:21
+  ptr/cell/value?\00:6
+    stack/last/next>+
+    stack/last/next/prev>stack/last
+    stack/last>stack/last/next
+    stack/last/value>program/ip
+    \00?\00:14
+  # jump past
+  open
+  open/value>\00/next
+  # skip-loop
+  program/ip>program/ip/next
+  program/ip?program/last:-1000  # unexpected EOF
+  program/ip/value?'[':2; \00?\00:3
+    open/value>open/value/next
+    \00?\00:5
+  program/ip/value?']':2; \00?\00:3
+    open/value>open/value/prev
+    open/value?\00:2
+  \00?\00:-10
+  \00?\00:6
+
+# Jump to top of stack and pop it
+program/ip/value?']':2; \00?\00:4
+  program/ip>stack/last/value
+  stack/last>stack/last/prev
+  \00?\00:2  # skip ip-incrementation
+
+# Iterate
+program/ip>program/ip/next
+\00?\00:-57

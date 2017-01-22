@@ -1,0 +1,37 @@
+next; prev; value
+0
+1; 1/prev>0; 1/prev/next>1
+2; 2/prev>1; 2/prev/next>2
+3; 3/prev>2; 3/prev/next>3
+4; 4/prev>3; 4/prev/next>4
+5; 5/prev>4; 5/prev/next>5
+
+fizz; buzz; 'fizz buzz'
+result
+
+c3; c3/value>0
+c5; c5/value>0
+
+count; count/value>0
+
+count/value/next?count/value/next:3
+  count/value/next>+
+  count/value/next/prev>count/value
+
+count/value>count/value/next
+c3/value>c3/value/next
+c5/value>c5/value/next
+result/value>count/value
+c3/value?3:2; 1?1:8
+  result/value>fizz
+  c3/value>0
+  c5/value?5:2; 1?1:3
+    result/value>'fizz buzz'
+    c5/value>0
+  1?1:5
+c5/value?5:2; 1?1:3
+  result/value>buzz
+  c5/value>0
+
+stdout/write>result/value
+1?1:-21

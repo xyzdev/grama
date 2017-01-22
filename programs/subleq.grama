@@ -1,0 +1,136 @@
+# An implementation of the single-instruction language Subtract and branch if Less than or Equal to zero.
+#
+# Data is input by entering the index followed by the value, and terminated by an empty line.
+# Example: to enter three values, "0,2,-1" (subtract 0 from -1 and terminate) would be entered as:
+# ip
+# > 0
+# value
+# > 5
+# ip
+# > 1
+# value
+# > 2
+# ip
+# > 3
+# value
+# > -1
+# ip
+# > [empty line]
+#
+# If a value is input which is less than -1 or greater than the largest index, the program will require its sign and
+# the lower/higher value, as well as the next lower/higher value until a known value is encountered.
+# Example (after entering "5, 2, -1):
+# 5
+# sign
+# > 1
+# prev
+# > 4
+# 4
+# prev
+# > 3
+
+-1; 0; 1; sign; next; prev
+-1/sign>-1; 0/sign>0; 1/sign>1;
+
+-1/next>0;
+0/prev>-1
+0/next>1;
+1/prev>0
+
+program; start; end; ip
+reg; minuend; subtrahend; value
+
+# Read program
+program/ip>-1
+
+  stdout/write>ip
+  reg/value>stdin/read
+  reg/value?'':11
+  reg/value?stdin/eof:10
+
+  program/ip/next>reg/value
+  program/ip/next/prev>program/ip
+  program/ip>program/ip/next
+
+  stdout/write>value
+  program/ip/value>stdin/read
+  program/ip/value?'':-1
+
+  program/ip/sign?program/ip/sign:2
+    program/ip/sign>1
+1?1:-12
+
+# Describe unknown numbers
+reg/ip>0
+reg/value>reg/ip/value
+  reg/value/value?reg/value/value:2
+    reg/value/value>0
+
+  reg/value/sign?reg/value/sign:2; 1?1:5
+    reg/ip/next/value?reg/ip/next/value:2; 1?1:24
+      reg/ip>reg/ip/next
+      1?1:-8
+
+  stdout/write>reg/value
+  reg/value?reg/ip/value:3
+    reg/value/sign>reg/ip/value/sign
+    1?1:3
+  stdout/write>sign
+    reg/value/sign>stdin/read
+
+  reg/value/sign?1:2; 1?1:6
+    stdout/write>prev
+    reg/value/prev>stdin/read
+    reg/value/prev/next>reg/value
+    reg/value>reg/value/prev
+    1?1:-20
+
+  reg/value/sign?-1:2; 1?1:6
+    stdout/write>next
+    reg/value/next>stdin/read
+    reg/value/next/prev>reg/value
+    reg/value>reg/value/next
+    1?1:-27
+  1?1:-1000
+
+program/ip>0
+
+# Execute
+program/ip/sign?-1:-1000
+
+# reg/subtrahend is the value, while reg/minuend is the cell containing the value (since the cell is to be mutated)
+reg/subtrahend>program/ip/value/value
+reg/minuend>program/ip/next/value
+
+reg/subtrahend?0:18
+  reg/subtrahend/sign?-1:9
+
+    reg/subtrahend>reg/subtrahend/prev
+    reg/minuend/value/prev/next?reg/minuend/value:5
+      reg/minuend/value/prev>+
+      reg/minuend/value/prev/sign>reg/minuend/value/sign
+      reg/minuend/value/prev/value>0
+      reg/minuend/value/prev/next>reg/minuend/value
+    reg/minuend/value>reg/minuend/value/prev
+
+    1?1:8
+
+  reg/subtrahend>reg/subtrahend/next
+  reg/minuend/value/next/prev?reg/minuend/value:5
+    reg/minuend/value/next>+
+    reg/minuend/value/next/sign>reg/minuend/value/sign
+    reg/minuend/value/next/value>0
+    reg/minuend/value/next/prev>reg/minuend/value
+  reg/minuend/value>reg/minuend/value/next
+
+  1?1:-17  # loop subtraction
+
+reg/minuend/value/sign?1:5
+program/ip/next/next/value?program/ip/next/next/value:2
+  1?1:-1000
+program/ip>program/ip/next/next/value
+1?1:-25  # loop instruction
+program/ip/next/next/next?program/ip/next/next/next:2
+  1?1:-1000
+program/ip>program/ip/next/next/next
+1?1:-4  # loop instruction

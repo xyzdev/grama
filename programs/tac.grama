@@ -1,0 +1,17 @@
+1;
+in; cursor; first; last; next; val
+
+in/first>+
+in/cursor>in/first
+
+in/cursor/next>+
+in/cursor/next/last>in/cursor
+in/cursor>in/cursor/next
+in/cursor/val>stdin/read
+in/cursor/val?stdin/eof:2
+1?1:-5
+
+in/cursor>in/cursor/last
+stdout/write>in/cursor/val
+in/cursor/last?in/first:2
+1?1:-3
