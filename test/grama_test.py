@@ -31,6 +31,10 @@ class Test(object):
                          ma.find(Address('stdin', ['eof'])).name})
         assert_equal(expected, set(ma.concepts.keys()))
 
+    @staticmethod
+    def assert_links(expected, actual):
+        assert_equal(expected, {ln.name: tgt.name for ln, tgt in actual.iteritems()})
+
     def test_create(self):
         ma, inp, out = self.build()
         ma.instructions.append(Instruction(Instruction.CREATE, Address('foo')))
@@ -73,7 +77,7 @@ class Test(object):
         self.assert_value(ma, ('baz', {}), 'baz')
         self.assert_value(ma, ('bar', ['foo']), 'baz')
 
-        assert_equal({'foo': 'baz'}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': 'baz'}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
         assert_equal({}, ma.find(Address('baz')).links)
 
@@ -91,9 +95,9 @@ class Test(object):
         self.assert_value(ma, ('bar', ['foo', 'baz']), 'baz')
         self.assert_value(ma, ('baz', ['baz', 'baz', 'baz', 'baz']), 'baz')
 
-        assert_equal({'foo': 'baz'}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': 'baz'}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
-        assert_equal({'baz': 'baz'}, ma.find(Address('baz')).links)
+        self.assert_links({'baz': 'baz'}, ma.find(Address('baz')).links)
 
         ma.instructions.append(Instruction(Instruction.LINK,
                                            Address('bar', ['foo', 'baz']),
@@ -107,9 +111,9 @@ class Test(object):
         self.assert_value(ma, ('baz', []), 'baz')
         self.assert_value(ma, ('bar', ['foo']), 'baz')
 
-        assert_equal({'foo': 'baz'}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': 'baz'}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
-        assert_equal({'baz': 'baz', 'foo': 'bar'}, ma.find(Address('baz')).links)
+        self.assert_links({'baz': 'baz', 'foo': 'bar'}, ma.find(Address('baz')).links)
 
     def test_link_new(self):
         ma, inp, out = self.build()
@@ -139,7 +143,7 @@ class Test(object):
         self.assert_value(ma, ('bar', ['foo']), new.name)
         self.assert_value(ma, (new.name, []), new.name)
 
-        assert_equal({'foo': new.name}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': new.name}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
         assert_equal({}, ma.find(Address('baz')).links)
         assert_equal({}, ma.find(Address(new.name)).links)
@@ -174,7 +178,7 @@ class Test(object):
         self.assert_value(ma, ('baz', []), 'baz')
         self.assert_value(ma, ('bar', ['foo']), 'baz')
 
-        assert_equal({'foo': 'baz'}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': 'baz'}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
         assert_equal({}, ma.find(Address('baz')).links)
 
@@ -197,7 +201,7 @@ class Test(object):
         self.assert_value(ma, ('baz', []), 'baz')
         self.assert_value(ma, ('bar', ['foo']), 'baz')
 
-        assert_equal({'foo': 'baz'}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': 'baz'}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
         assert_equal({}, ma.find(Address('baz')).links)
 
@@ -220,7 +224,7 @@ class Test(object):
         self.assert_value(ma, ('baz', []), 'baz')
         self.assert_value(ma, ('bar', ['foo']), 'baz')
 
-        assert_equal({'foo': 'baz'}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': 'baz'}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
         assert_equal({}, ma.find(Address('baz')).links)
 
@@ -244,7 +248,7 @@ class Test(object):
         self.assert_value(ma, ('baz', []), 'baz')
         self.assert_value(ma, ('bar', ['foo']), 'baz')
 
-        assert_equal({'foo': 'baz'}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': 'baz'}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
         assert_equal({}, ma.find(Address('baz')).links)
 
@@ -267,7 +271,7 @@ class Test(object):
         self.assert_value(ma, ('baz', []), 'baz')
         self.assert_value(ma, ('bar', ['foo']), 'baz')
 
-        assert_equal({'foo': 'baz'}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': 'baz'}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
         assert_equal({}, ma.find(Address('baz')).links)
 
@@ -295,7 +299,7 @@ class Test(object):
         self.assert_value(ma, ('new_concept', {}), 'new_concept')
         self.assert_value(ma, ('bar', ['foo']), 'new_concept')
 
-        assert_equal({'foo': 'new_concept'}, ma.find(Address('bar')).links)
+        self.assert_links({'foo': 'new_concept'}, ma.find(Address('bar')).links)
         assert_equal({}, ma.find(Address('foo')).links)
         assert_equal({}, ma.find(Address('new_concept')).links)
 

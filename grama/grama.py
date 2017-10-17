@@ -31,19 +31,18 @@ class Concept(object):
         self.links = links if links is not None else {}
 
     def get(self, ma, link):
-        return ma.concepts.get(self.links.get(link))
+        target = self.links.get(link)
+        return ma.concepts.get(target.name) if target is not None else None
 
-    def link(self, name, target):
-        self.links[name] = target
+    def link(self, ln, target):
+        self.links[ln] = target
 
     def target_by_link(self, typ):
-        if isinstance(typ, Concept):
-            typ = typ.name
         return self.links.get(typ)
 
     def __str__(self):
         return "%s [%s]" % (Parser.encode_name(self.name),
-                            ','.join('%s->%s' % (Parser.encode_name(typ), Parser.encode_name(tgt))
+                            ','.join('%s->%s' % (Parser.encode_name(typ.name), Parser.encode_name(tgt.name))
                                      for typ, tgt in self.links.iteritems()))
 
 
@@ -80,7 +79,7 @@ class Machine(object):
         for seg in addr.path:
             if c is None:
                 return None
-            c = c.get(self, seg)
+            c = c.get(self, self.concepts.get(seg))
 
         return c
 
@@ -134,7 +133,7 @@ class Instruction(object):
                 raise ValueError('Failed to link %s/%s to (%s)' % (self.source, self.link, self.target))
             if not link:
                 raise ValueError('Failed to link %s/(%s) to %s' % (self.source, self.link, self.target))
-            s.link(link.name, t.name)
+            s.link(link, t)
             return 1
         if self.action == self.MATCH:
             s = ma.find(self.source)
@@ -162,12 +161,10 @@ class InputConcept(Concept):
         self.ma = ma
         self.stream = stream if stream else lambda: sys.stdin.readline()
         ma.create('read')
-        ma.create('eof')
-        eof = ma.create()
-        self.link('eof', eof.name)
+        self.link(ma.create('eof'), ma.create())
 
     def get(self, ma, link):
-        if link != 'read':
+        if link.name != 'read':
             return super(InputConcept, self).get(ma, link)
 
         name = self.stream()
@@ -190,13 +187,13 @@ class OutputConcept(Concept):
     def _print(x):
         print x
 
-    def link(self, name, target):
-        if name != 'write':
-            return super(OutputConcept, self).link(name, target)
-        c = self.ma.concepts.get(target)
+    def link(self, ln, target):
+        if ln.name != 'write':
+            return super(OutputConcept, self).link(ln, target)
+        c = self.ma.concepts.get(target.name)
         if c is None:
             return None
-        self.stream(target)
+        self.stream(target.name)
 
 
 class DebugSignalTrap(object):
@@ -308,6 +305,7 @@ class DebugConcept(Concept):
             'dump': '[c] [ip] [i]  - print concepts, ip, instructions',
             'show': 'NAME[/PATH]  - print concept',
             'verbose': '[0|1]  - toggle verbose flag',
+            'rename': 'NAME[/PATH] NEW_NAME  - rename a concept',
             'debug': '[0|1]  - toggle between debug mode and interactive mode',
             'step': '[IP]  - execute statement at ip or IP',
             'break': '[IP] [0|1]  - list breakpoints or toggle breakpoint at IP',
@@ -327,9 +325,9 @@ class DebugConcept(Concept):
             self.ostream('')
             return ''
 
-    def link(self, name, target):
-        if name != 'break' or not target:
-            return super(DebugConcept, self).link(name, target)
+    def link(self, ln, target):
+        if ln.name != 'break' or not target:
+            return super(DebugConcept, self).link(ln, target)
 
         self.attach = True
         self.debug = True
@@ -400,6 +398,22 @@ class DebugConcept(Concept):
                     self.ostream(eval(' '.join(args)))
                 except Exception, e:
                     self.ostream(e)
+
+            elif cmd == '/rename':
+                if len(args) != 2:
+                    self.ostream('CONCEPT AND NEW NAME REQUIRED')
+                else:
+                    seg = [self.parser.decode(s) for s in args[0].split('/')]
+                    concept = ma.find(Address(seg[0], seg[1:]))
+                    new_name = self.parser.decode(args[1])
+                    if concept is None:
+                        self.ostream('UNKNOWN CONCEPT')
+                    elif ma.find(Address(new_name)):
+                        self.ostream('CONCEPT ALREADY EXISTS')
+                    else:
+                        del ma.concepts[concept.name]
+                        concept.name = new_name
+                        ma.concepts[concept.name] = concept
 
             elif cmd == '/show':
                 if not args:
