@@ -168,7 +168,7 @@ class InputConcept(Concept):
             return super(InputConcept, self).get(ma, link)
 
         name = self.stream()
-        name = name.strip('\n') if name else self.links.get('eof')
+        name = name.strip('\n') if name else self.links.get(ma.find(Address('eof')))
 
         c = self.ma.concepts.get(name)
         if c is not None:
